@@ -3276,6 +3276,7 @@ int main(){
 
 //函数返回值的类型。既然函数有返回值，这个值当然应该属于某一种确定的类型，所以应当在定义函数时明确指出函数返回值的类型。
 //如果函数值的类型和return 语句中表达式的值不一致，则以函数的返回值类型为准，即函数定义的返回值类型决定最终返回值的类型。数值型数据，可以自动进行类型转化。
+/*
 //返回值类型 与 return值类型
 #include<stdio.h>
 char ShowChar();  //函数声明
@@ -3292,3 +3293,1573 @@ char ShowChar(){
     scanf("%d", &iNumber);
     return iNumber;  //返回的结果是整型  与  声明的函数返回类型不同
 }
+*/
+
+//通常形式参数简称为形参，实际参数简称为实参。
+/*
+//形式参数与实际参数的比喻实现
+#include<stdio.h>
+void DrinkMilk(char *cBottle);  //声明函数
+int main(){
+    char cPoke[] = "";  //定义字符数组变量
+    printf("妈妈想给婴儿：");  //输出信息提示
+    scanf("%s", &cPoke);  //输入字符串
+    DrinkMilk(cPoke);  //将实际参数传递给形式参数
+
+    return 0;
+}
+//喝牛奶的动作
+void DrinkMilk(char *cBottle)  //cBottle为形式参数
+{
+    printf("婴儿喝%s\n", cBottle);  //输出提示，进行喝牛奶动作
+    //某些编译器不识别中文，所以在编写程序时，尽量使用英文编写。
+}
+*/
+//实参可以是常量、变量、表达式和参数等，但不论是什么类型的量，只要是实参，在函数进行调用时，这个类型量必须具有确定的值，以便把这些值送给形参，为了避免发生”类型不匹配“的错误，实参和形参的类型、数量、书写顺序等都必须保持一致。
+
+/*
+    将数组作为函数参数进行传递，不同于标准赋值调用的参数传递方法。
+    当数组作为函数的实参时，只传递数组的地址，而不是将整个数组赋值到函数中去。！！！
+    当用数组名作为实参调用函数时，指向该数组的第一个元素的指针就被传递到函数中。 ！！！
+注：在C语言中没有任何下标的数组名是一个指向该数组第一个元素的指针，其中没有下标的数组名Shmily与指向第一个元素的指针 *Shmily 是相同的。
+    而声明函数参数时必须要具有相同的类型，根据这一点，下面将对使用数组作为函数参数的各种情况进行详细的讲解。
+*/
+
+/*
+//使用数组元素作为函数参数  求学生的平均身高
+#include<stdio.h>
+int main(){
+    float average(float array[], int n);  //函数声明
+    float height[100], aver;
+    int i, n;
+    printf("请输入学生的数量：\n");
+    scanf("%d", &n); //输入学生数量
+    printf("请输入学生们的身高：\n");
+    for ( i = 0; i < n; i++)
+    {
+        scanf("%f", &height[i]);  //逐个输入学生的身高
+    }
+    printf("\n");
+    
+    aver = average(height, n);  //调用average()函数求出平均身高
+    printf("学生的平均身高为：%6.2f\n", aver);  //将平均身高输出
+
+    return 0;
+}
+float average(float array[], int n){
+    //自定义求平均身高函数
+    int i;
+    float aver, sum=0;
+    for ( i = 0; i < n; i++)
+    {
+        sum +=  array[i];  //用for语句实现sum累加求和
+    }
+
+    aver = sum / n;  //总和除以人数求出平均数
+    return aver;
+}
+*/
+
+/*
+//数组名作为函数参数  
+#include<stdio.h>
+void Evaluate(int iArraryNmae[10]);  //声明赋值函数
+void Display(int iArraryName[10]);  //声明显示函数
+int main(){
+    int iArray[10];  //定义一个具有10个元素的整型数组
+    Evaluate(iArray);  //调用函数进行赋值操作，将数组名作为参数
+    Display(iArray);  //调用函数进行赋值操作，将数组名作为参数
+    
+    return 0;
+}
+//数组元素的显示
+void Display(int iArraryName[10]){
+    int i;  //定义整型变量
+    for ( i = 0; i < 10; i++)
+    {
+        printf("会员的编号是：%d\n", iArraryName[i]);  //执行循环语句，在循环语句中执行输出操作
+    }
+}
+//进行数组元素的赋值
+void Evaluate(int iArraryName[10]){
+    int i;  //定义整型变量
+    for ( i = 0; i < 10; i++)
+    {
+        iArraryName[i] = i;  //执行循环语句，在循环语句中执行赋值操作
+    }  
+}
+*/
+
+//使用指针作为函数参数  PS:将函数参数声明为一个指针的方法也是C语言程序比较专业的写法
+//当数组作为函数的实参时，只传递数组的地址，而不是将整个数组复制到函数中去。当用数组名作为实参调用函数时，指向该数组的第一个元素的指针就被传到函数中。
+
+/*
+//指针作为函数参数  对上一个程序进行修改，使之可以在新的情况下调用
+#include<stdio.h>
+void Evaluate(int *pPoint);  //声明函数，参数为可变长度数组
+void Display(int *pPoint);  //声明函数，参数为可变长度数组
+int main(){
+    int iArray[10];  //定义一个具有10个元素的整型数组
+    Evaluate(iArray);  //调用函数进行赋值操作，将数组名作为参数
+    Display(iArray);  //调用函数进行赋值操作，将数组名作为参数
+    
+    return 0;
+}
+//数组元素的显示
+void Display(int *pPoint) //定义函数，参数为可变长度数组
+{
+    int i;  //定义整型变量
+    for ( i = 0; i < 10; i++)
+    {
+        printf("会员的编号是：%d\n", pPoint[i]);  //执行循环语句，在循环变量中执行输出操作
+    }
+}
+//进行数组元素的赋值
+void Evaluate(int *pPoint){  //定义函数，参数为可变长度数组
+    int i;  //定义整型变量
+    for ( i = 0; i < 10; i++)
+    {
+        pPoint[i] = i;  //执行循环语句，在循环语句中执行赋值操作
+    }
+}
+//指针传递 与 数组名 传递 有什么区别呢？
+*/
+
+/*
+    main()函数的参数 在运行程序时，有时需要将必要的的参数传递给主函数，主函数main()的形式参数如下：
+        main(int argc, char *argv[]);
+    两个特殊的内部形参 argc 和 argv 是用来接收命令行实参的，这是只有主函数main()才能具有的参数。
+    ① argc参数：argc参数保存命令行的参数个数，是个整型变量，做个饭参数的值至少是1，以为你至少程序名是第一个实参。
+    ② argv参数：argv参数是一个指向字符指针数组的指针，在这个数组里的每一个元素都指向命令行实参。所有命令行实参都是字符串，任何数字都必须由程序转换变成适当的格式。
+*/
+/*
+//main()函数的参数使用
+#include<stdio.h>
+int main(int argc[],char *argv[]){
+    printf("%s\n", argv[0]);  //输出程序的位置
+
+    return 0;
+    //为什么我运行这段代码会有错误信息？为什么会爆出这个错误？first parameter of 'main' (argument count) must be of type 'int'
+} 
+*/
+
+//函数调用： 1、函数语句调用2、函数表达式调用 3、函数参数调用
+
+/*
+//函数语句调用 (把函数的调用作为一个语句就叫做函数语句调用。)通过调用函数完成显示一条信息的功能，进而观察函数语句调用的使用方式
+#include<stdio.h>
+void Display(){
+    printf("恭喜你，未来的编程高手！\n");  //实现显示一条信息的功能
+}
+int main(){
+    Display();  //函数语句调用
+    
+    return 0;
+}
+*/
+
+//函数表达式调用 (函数出现在一个表达式中，这时要求函数返回一个确定的值，这个值将参加表达式的运算。)  本实例中，定义一个函数，函数的功能是进行加法计算。并在表达式中调用该函数，使得函数的返回值参加运算得到新的结果。
+/*
+#include<stdio.h>
+int AddTwoNum(int iNum1, int iNum2);  //声明函数，函数进行加法计算
+int main(){
+    // int AddTwoNum(int iNum1, int iNum2);  //声明函数，函数进行加法计算  所以自定义函数只要在使用前声明，在哪里都是可以的。
+    int iRresult;  //定义变量用来存储计算结果
+    int iNum3 = 10;  //定义变量，赋值为10
+    iRresult = iNum3 * AddTwoNum(3,5);  //在表达式中调用函数AddTwoNum()
+    printf("计算结果是：%d\n", iRresult);  //将计算结果输出
+
+    return 0;
+}
+int AddTwoNum(int iNum1, int iNum2){
+    int iTempResult;  //定义整型变量
+    iTempResult = iNum1 + iNum2;  //进行加法计算，并将结果赋值给iTempResult
+
+    return iTempResult;
+}
+*/
+
+//函数参数调用（函数调用作为一个函数的实参，将函数返回值作为实参传递到函数中进行使用，函数出现在表达式中，这时要求函数返回一个确定的值，这个值将参加表达式的运算）
+/*
+#include<stdio.h>
+//声明函数，函数进行加法计算
+int AddTwoNum(int iNum1, int iNum2);
+int main(){
+    int iResult;  //定义变量用来存储计算结果
+    iResult = AddTwoNum(10, AddTwoNum(3,5));  //在参数中调用函数AddTwoNum()
+    printf("计算结果是：%d\n", iResult);  //将计算结果输出
+
+    return 0;
+} 
+int AddTwoNum(int iNum1, int iNum2){
+    int iTempResult;  //定义整型变量
+    iTempResult = iNum1 + iNum2;  //进行加法计算，并将结果赋值给iTempResult
+    
+    return iTempResult;  //返回计算结果
+}
+*/
+
+//在C语言中，函数中定义函数是错误的。 但是C语言中可以进行嵌套调用函数，即可以再一个函数体内调用另外一个函数。
+//函数的嵌套调用 
+/* 
+#include<stdio.h>
+void CEO();  //声明函数
+void Manager();
+void AssistantManager();
+void Clerk();
+int main(){
+    CEO();  //调用CEO()作用函数
+
+    return 0;
+}
+void CEO(){
+    //输出信息，表示调用CEO()函数进行相应的操作
+    printf("CEO（首席执行官）的工作室命令经理\n");
+    Manager();  //调用Manager()的作用函数
+}
+void Manager(){
+    //输出信息，表示调用Manager()函数进行相应的操作
+    printf("经理的工作是命令经理助理\n");
+    AssistantManager();  //调用AssistantManager()的作用函数
+}
+void AssistantManager(){
+    //输出信息，表示调用AssistantManager()函数进行相应的操作
+    printf("经理助理的工作是命令职员\n");
+    Clerk();  //调用Clerk()的作用函数
+}
+void Clerk(){
+    //输出信息，表示调用Clerk()函数进行相应的操作
+    printf("职员的工作室完成任务\n");
+}
+*/
+
+//递归调用  又被称为自调用函数，C语言的函数都支持递归，也就是说，每个函数都可以直接或者间接的调用自己。所谓的直接调用，是指函数直接调用自身函数，所谓的间接调用，是指递归函数调用的下层函数再调用自己。
+//递归之所以能实现，是因为函数的每个执行过程在栈中都有自己的形参和局部变量的副本，这些副本和该函数的其他执行过程不发生关系。
+/*
+//函数的递归调用  定义一个字符串数组，为其数组赋值为一系列的名称，再通过递归函数的使用，最后时限逆序显示排列的名单
+#include<stdio.h>
+void DisplayNames(char** cNameArray);  //声明函数
+char* cNamees[] ={"Aaron", "Jim", "Charles", "Sam", "Ken", "end"};  //为字符串赋值 一个全局字符串数组
+int main(){
+    DisplayNames(cNamees);  //调用递归函数
+
+    return 0;
+}   
+void DisplayNames(char** cNameArray){
+    if(*cNameArray == "end" ){//判断结束标志
+        return ;  //函数结束返回  
+    }  
+    else{
+        DisplayNames(cNameArray+1);  //调用递归函数
+        printf("%s\n", *cNameArray);  //输出字符串
+    }
+}
+*/
+
+//递归解决年龄问题 5>4 2岁； 4>3 2岁；  3>2  2岁； 2>1 2岁；  1  10岁； 要求输入第几个人，求出其对应年龄；
+/*
+#include<stdio.h>
+int getAge(int num);
+int main(){
+    int numPeople, age;  //第几个人的年龄
+    printf("请问你要知道第几个人的对应年龄：\n");
+    scanf("%d", &numPeople);  //获取输入
+
+    age = getAge(numPeople);  //传入获取第几个人年龄的参数， 将值返回给变量age
+    printf("第%d的年龄是%d。\n", numPeople, age);  //输出结果
+
+    return 0;
+}
+int getAge(int num){
+    if(num == 1){
+        return 10;
+    }
+    else
+    {
+        return 2 + getAge(num-1);
+    }    
+}
+*/
+
+/*
+！！！
+//解决分鱼问题 每人/5  -1  至少捕到了多少鱼 ==》  最后一个人，只拿到一条鱼即为最少
+#include<stdio.h>
+int AllFish(int n);
+int main(){
+    int panduan = 5;
+    int res = AllFish(panduan);
+
+    printf("%d\n", res);
+
+    return 0;
+}
+int AllFish(int n){
+    if(n == 1){
+        static int i = 0;
+        do
+        {
+        return (i+1);
+            i ++;
+        } while (i % 5 != 0);
+    }
+    else
+    {
+        int t;
+        do
+        {
+            t = AllFish(n - 1);
+        } while (t % 4 != 0);
+        return (t / 4 * 5 + 1);
+    }
+    
+}   
+*/
+
+//灵活运用函数 为了快速编写程序，编译系统都会提供一些库函数，不同的编译系统所提供的库函数可能不完全相同。其中函数名字可能相同但是实现的功能不同，也有可能实现同一功能但是函数的名字不同。
+//ANSIC 标准提供的标准库函数包含了目前多数C编译系统所提供的库函数，下面就介绍了一些常用的库函数。
+
+/*
+数学函数
+    abs()函数：求整数的绝对值  //在使用数学函数时，要在程序中包含头文件 math.h。
+    lbs()函数：求长整数的绝对值。
+    fabs()函数：返回浮点数的绝对值
+
+三角函数：
+    sin()函数：正弦函数。 double sin(double x);
+    cos()函数：余弦函数。 double cos(double x);
+    tan()函数：正切函数。 double tan(double x);
+
+字符和字符串函数：
+    isalpha()函数：检测字母(检测是否是字母而不是其他特殊字符)，如果参数(ch)是字母表中的字母(大写或小写)，则返回非0。//要包含头文件ctype.h  int isalpha( int ch );
+    isdigit()函数：检测数字，如果参数是数字则函数返回非0值，否则返回0. int isdigit( int chh );
+    isalnum()函数：检测字母或数字，如果参数时字母表中的一个字母或一个数字，则函数返回非0值，否则返回0。 int isalnum( int ch );
+
+*/
+
+/*
+//数学库函数的使用
+#include<stdio.h>
+#include<math.h>
+int main(){
+    int iAbsoluteNumber;  //定义整数
+    int iNumber = -12;  //定义整数，其赋值为-12
+    long lResult;  //定义长整数
+    long lNumber = -1234567890L;  //定义长整数，为其赋值为-1234567890
+    double fFloatResult;  //定义浮点型
+    double fNumber = -123.1;  //定义浮点数，为其赋值为-123.1
+
+    iAbsoluteNumber = abs(iNumber);  //将iNumber的绝对值赋给iAbsoluteNumber变量
+    lResult = labs(lNumber);  //将lNumber的绝对值赋给lResult变量
+    fFloatResult = fabs(fNumber);  //将fNumber的绝对值赋给fFloatResult变量
+
+    //输出原来的数字，然后将得到的绝对值输出
+    printf("初始的值是：%d，它的绝对值为：%d\n", iNumber, iAbsoluteNumber);
+    printf("初始的值是：%ld，它的绝对值为：%ld\n", lNumber, lResult);
+    printf("初始的值是：%lf，它的绝对值为：%lf\n", fNumber, fFloatResult);
+
+    return 0;
+}
+*/
+
+/*
+//使用三角函数
+#include<stdio.h>
+#include<math.h>
+int main(){
+    double fResultSin;  //用来保存正弦值
+    double fResultCos;  //用来保存余弦值
+    double fResultTan;  //用来保存正切值
+
+    double fXsin;
+    double fXcos;
+    double fXtan;
+
+    printf("您想要求出哪个函数的正弦值：");   //求出正弦值的过程：  赋值 -->  函数计算 --> 打印
+    scanf("%lf", &fXsin);
+    fResultSin = sin(fXsin);
+    printf("%lf的正弦值为：%lf\n", fXsin, fResultSin);
+
+    printf("您想要求出哪个数的余弦值：");  //求余弦值， 与求正弦值同理  ==>  对于这三个函数，可以整理为一个函数！！！
+    scanf("%lf", &fXcos);
+    fResultCos = cos(fXcos);
+    printf("%lf的余弦值为：%lf\n", fXcos, fResultCos);
+
+    printf("您想要求出哪个数的正切值：");  //求正切值， 与求正弦值同理
+    scanf("%lf", &fXtan);
+    fResultTan = cos(fXtan);
+    printf("%lf的正切值为：%lf\n", fXtan, fResultTan);
+
+    return 0;
+}
+*/
+
+/*
+//使用字符函数判断输入的字符 通过向控制台输入字符，利用if判断语句和字符函数判断输入的是哪一种类型的字符，然后根据字符的不同类型输出提示信息
+#include<stdio.h>
+#include<ctype.h>
+void SwitchShow(char c);
+int main(){
+    char cCharPut;  //定义字符变量，用来接收输入的字符
+    char cCharTemp;  //定义字符变量，用来接收回车
+    printf("第一次输入字符：");  //消息提示
+    scanf("%c", &cCharPut);  //输入字符
+    SwitchShow(cCharPut);  //调用函数进行判断
+    cCharTemp = getchar();  //接收回车
+    
+    printf("进行第二次输入字符：");  //消息提示
+    scanf("%c", &cCharPut);  //输入字符
+    SwitchShow(cCharPut);  //调用函数判断输入的字符
+    cCharTemp = getchar();  //接收回车   输入字符时，每次输入完毕之后要按回车键进行确认，但是这样的话回车键就会变成下一次要输入的字符，所以在此调用getchar()将回车字符进行提取
+    
+    printf("进行第三次输入字符：");  //消息提示
+    scanf("%c", &cCharPut);  //输入字符
+    SwitchShow(cCharPut);  //调用函数判断输入的字符
+
+    return 0; //程序结束
+}
+void SwitchShow(char cChar){
+    if(isalpha(cChar)){
+        //判断是否是字母
+        printf("您输入的是字符表里的字母：%c\n", cChar);
+    }
+    if(isdigit(cChar)){
+        //判断是否是数字
+        printf("您输入的是阿拉伯数字：%c\n", cChar);
+    }
+    if(isalnum(cChar)){
+        //判断是否是字母或数字
+        printf("您输入的是包含字母和数字：%c\n", cChar);
+    }
+    else
+    {
+        //当字符既不是字母也不是数字时
+        printf("您输入的既不是字母也不是数字：%c\n", cChar);
+    }
+    
+}
+*/
+
+/*
+    总结：
+        C语言中有关函数的内容，内容包括函数的定义、函数的返回语句、函数参数、函数调用、函数应用。
+*/
+
+/*
+//实战模拟
+//1、小数分离 利用数学函数以下功能：从键盘输入一个小数，将其分解为整数部分和小数部分并将其显示在屏幕上。
+#include<stdio.h>
+#include<math.h>
+int main(){
+    float number;
+    double f,i;
+    printf("input the number: ");
+    scanf("%f", &number);  //输入要分解的小数
+    f = modf(number, &i);  //调用modf()函数进行分离， 小数作为返回值，  整数部分存放到由i所的变量中
+    printf("%f=%f+%f\n", number, i, f);  //将分离后的结果按指定结果
+
+    return 0;
+}
+*/
+/*
+//2、求任意数的n次幂  利用数学函数实现以下功能：分别从键盘输入底数及次幂，求出该次幂开始的连续5个结果，要求每次次幂加1。
+#include<stdio.h>
+#include<math.h>
+int main(){
+    float base, power;
+    printf("please input the base: ");  //输出提示信息
+    scanf("%f", &base);  //输入底数
+    printf("please input the power: ");  //输出提示信息
+    scanf("%f", &power);  //输入次幂
+
+    for (int i = 0; i <= 5; i++)
+    {
+        printf("%.1f^%.1f is %.3f\n", base, power, pow(base,power));
+        power+=1;
+    }
+
+    return 0;
+    
+}
+*/
+
+/*
+//固定格式输出当前时间 编程实现将当前时间用以下形式输出： 星期  月  日  小时：分：秒 年
+#include<stdio.h>
+#include<stdlib.h>
+#include<time.h>
+int main(){
+    //调用time()函数获取当前时间信息，再调用localtime()函数分解时间，最后使用asctime()函数将时间以指定格式输出
+    time_t Time;  //定义Time为time_t类型
+    struct tm *t;  //定义指针 t 为tm结构类型
+    Time = time(NULL);  //将time函数返回值存到Time中
+    t = localtime(&Time);  //调用localtime()函数
+    printf("Local time is: %s", asctime(t));  //调用asctime函数，以固定格式输出当前时间
+
+    return 0;
+}
+*/
+
+
+//！！！第十一章  指针！！！
+//指针是C语言中广泛使用的一种数据类型，也是C语言中最为重要的组成部分之一。指针 --> 1、提高程序的编译效率和执行速度 2、可以通过指针实现动态的存储分配  3、使程序更加灵活，表示各种数据结构，编写高质量的程序
+//1、指针概念 2、指针与数组之间的关系 3、指向指针的指针  4、掌握如何使用指针变量作函数参数  5、了解如何使用指针数组做main()函数的参数
+
+/*
+1 概述  
+    使用指针可以访问变量、数组、字符串，甚至连我们之前学习过的函数也可以访问。熟练的掌握了指针的应用，就可以使程序变得简洁、紧凑和高效。
+    地址与指针： 地址就是内存区中对每个字节号的编号，指针可以看做是内存的一个地址，多数情况下，这个地址是内存中另一个变量的位置。   
+    PS：定义一个变量。在进行编译时就会给这个变量在内存中分配一个地址，通过访问这个地址可以找到这个变量，这个变量的地址就称为该变量的指针。
+    注释：在C语言中，存取变量值的方法有两种。1、按变量地址存取变量值的方式称为”直接访问“方式；2、将变量地址存放带另一个变量中，先找到存放变量地址的另一个变量。铜鼓哦另一个变量找到变量的地址，这种方法称为”直接访问“。
+
+    变量的地址是变量和指针二者之间连接的纽带，如果一个变量包含了另一个变量的地址，那么第一个变量就可以说成是指向第二个变量。
+    所谓”指向“就是通过地址来实现的，在程序中用”*“符号表示”指向“。
+    因为指针变量是指向一个变量的地址，所以将一个变量的地址赋给这个指针变量后，这个指针变量就”指向“了该变量。
+        例如，将变量 i 的地址存放到指针变量p中，p 就指向i，其关系==》  p:&i  -->(*p)  -->   i: 5
+    在程序代码中是通过变量名来对内存单元进行存取操作，但是代码经过编辑后已经将变量名转换为该变量在内存中的存放地址，对变量值的存取都是通过地址进行的。（在低级语言的汇编语言中，都是直接通过地址来访问内存单元，而在高级语言中使用变量名访问内存单元，但C语言作为高级语言却提供了通过地址来访问内存单元的方法。）
+
+    由于通过地址能够访问指定的内存存储单元，可以说地址”指向“该内存单元。地址可以形象地称之为指针，意思是通过指针能找到内存单元。
+    一个变量的地址称为该变量的指针。如果有一个变量专门用来存放另一个变量的地址，它就是指针变量。
+    在C语言中，有专门用来存放内存单元地址的变量类型，就是指针类型。  ==》  定义一个指针变量、为一个指针变量赋值、如何引用指针变量
+    1、指针变量的一般形式：若一个变量专门用来存放另一个变量的地址，则称它为”指针变量“。如果一个变量包含有指针（指针等同于一个变量的地址），则必须对它作说明。
+    定义指针变量的一般形式如下：
+        类型说明 *变量名
+    * 表示这是一个指针变量，变量名即为定义的指针变量名，类型说明表示本指针变量所指向的变量的数据类型。
+    2、指针变量的赋值：给指针变量赋值只能赋予地址，而不能赋予任何其他数据，否则将引起错误。C语言中提供了地址运算符 ”&“ 来表示变量的地址： &变量名；
+        a、定义指针变量的同时就进行辅赋值： int a;  int *p = &a;
+        b、先定义指针变量，之后再赋值：  int a;  int *p;  p = &a;  //注：如果在定义完指针变量后再赋值不要加 ”*“
+    3、指针变量的引用：引用指针变量是对变量进行间接访问的一种形式。对指针遍历的引用形式如下： *指针变量  其意义是引用指针变量所指向的值。
+    4、”&“ 和 ”*“ 运算符：
+        运算符 & 是一个返回操作数地址的单目运算符，叫做取地址运算符 -->  p = &i; 就是将变量i的内存地址赋给p，这个地址是该变量在计算机内部的存储位置。
+        运算符 * 是单目运算符，叫做指针运算符，作用是返回指定内存地址内的变量值，例如：  q = *p;  就是将变量 i 的值赋给变量q。
+    5、”&*“ 和 ”*&“ 的区别：& 和 * 的运算符优先级别相同，按自右而左的方向结合。
+
+*/
+
+/*
+//从键盘中输入两个数分别代表苹果和香蕉的价格，利用指针的方法加你个这两个数输出
+#include<stdio.h>
+int main(){
+    int a,b;
+    int *p1, *p2;  //声明两个指针变量
+    printf("请输入苹果和橡胶的价格：\n");  
+    scanf("%d %d", &a, &b);  //输入两个数
+    p1 = &a;
+    p2 = &b;  //将地址赋给指针变量
+
+    printf("苹果的价格为：%d元/一斤\n", *p1);
+    printf("香蕉的价格为：%d元/一斤\n", *p2);
+
+    return 0;
+}
+*/
+
+/*
+//利用指针变量实现数据输入、输出
+#include<stdio.h>
+int main(){
+    int *p, q;
+    p = &q;
+    printf("请输入香蕉价格：\n");
+    scanf("%d", p);  //输入一个整型数据
+    printf("香蕉的价格是：%d元/斤\n", q); 
+
+    return 0;
+}
+*/
+
+/*
+//&* 的应用
+#include<stdio.h>
+int main(){
+    long i;
+    long *p;
+    printf("请输入一个数值：\n");
+    scanf("%ld", &i);
+    p = &i;
+
+    printf("输出&*p结果为：%ld\n", &*p);  //输出变量i的地址
+    printf("输出&i结果为：%ld\n", &i);  //输出变量i的地址
+
+    return 0;
+}
+*/
+
+/*
+// *& 应用
+#include<stdio.h>
+int main(){
+    long i;
+    long *p;
+    printf("请输入一个数值：\n");
+    scanf("%ld", &i);
+    p = &i;
+    
+    printf("输出*&i的结果为：%ld\n", *&i);  //输出变量i的值
+    printf("输出i的结果为：%ld\n", i);  //输出变量i的值
+    printf("输出*&i的结果为：%ld\n", *p);  //使用指针形式输出i的值;
+
+    return 0;
+}
+*/
+
+//指针的自加自减运算：不同于普通变量的自加自减运算，也就是说它并不是简单的加1减1。
+
+/*
+//整型变量地址输出
+#include<stdio.h>
+int main(){
+    int i;
+    int *p;
+    p = &i;  //将变量i的地址赋给指针变量 p
+    printf("请输入一个数值：\n");
+    scanf("%d", p);
+
+    printf("输出p的结果为：%ld\n", p);
+    p++;  //地址+1，这里的1并不代表一个字节
+    printf("输出p++的结果为：%ld\n", p);  //在mac Air上，加上了4
+
+    return 0;
+}
+*/
+/*
+//整型变量地址输出
+#include<stdio.h>
+int main(){
+    short i;
+    short *p;
+    p = &i;
+    printf("请输入一个数值：\n");
+    scanf("%hd", &i);
+
+    printf("输出指针变量p的结果：%ld\n", p);
+    p++;
+    printf("输出指针变量p++的结果：%ld\n", p);  //在mac Air上，加上了2 
+
+    return 0;
+}
+*/
+
+//第一个加上了4个字节的原因，因为基本整型变量i在内存中占4个字节，指针p是指向变量i的地址的，这里p++不是简单地在地址上加1，而是指向下一个存放基本整型数的地址。
+//而第二个加上2个字节的原因，因为i被定义为了短整型，所以p++后p的值增加了2（2个字节）。
+//!!! 指针都按照它所指向的数据类型的直接长度进行增或减。
+
+/*
+//使用指针实现整数排序  输入三个整数，将这三个整数按照由大到小的顺序输出，显示在屏幕上。
+#include<stdio.h>
+void swAmp(int *a, int *b);  //实现两个整数互换值
+void exChange(int *a, int *b, int *c);  //实现两个整数比较大小，若a<=b, 则a、b互相交换值
+int main(){
+    int num1, num2, num3;
+    int *p1=&num1, *p2=&num2, *p3=&num3; 
+    scanf("%d %d %d", p1, p2, p3);
+
+    exChange(p1, p2, p3);
+    printf("%d %d %d\n", *p1, *p2, *p3);
+
+    return 0;
+}
+void exChange(int *a, int *b, int *c){
+    if(*a < *b){
+        swAmp(a, b);
+    }
+    if(*a < *c){
+        swAmp(a, c);
+    }
+    if(*b < *c){
+        swAmp(b, c);
+    }
+}
+void swAmp(int *a, int *b){
+    int temp; //声明变量用于存储数据
+    temp = *a;
+    *a = *b;
+    *b = temp;
+}
+//使用指针编写这个程序给我的最大感受就是，不再需要考虑全局或者局部变量的问题，对变量的值的修改直接作用于内存中。
+*/
+
+/*
+//指向结构体变量的指针  通过结构体指针变量实现在窗体上显示学生信息。
+#include<stdio.h>
+struct student{
+    int num;  //学生学号
+    char name[20];  //学生姓名
+    char sex;  //学生性别
+    int age;  //学生年龄
+    float score;  //学生成绩
+};
+int main(){
+    struct student student1 = {1001, "李明洋", 'M', 20, 92.5};  //定义结构体变量
+    struct student *p;  //定义指针变量指向结构体类型
+    p = &student1;  //使用指针指向结构体变量
+    printf("Number：%d\n", p->num);  //输出学生学号
+    printf("Name：%s\n", p->name);  //输出学生姓名
+    printf("Sex：%c\n", p->sex);  //输出学生性别
+    printf("Age：%d\n", p->age);  //输出学年龄
+    printf("Score：%f\n", p->score);  //输出学生成绩
+
+    return 0;
+}
+//一个结构体变量的指针就是该变量所占据的内存段的起始地址。用一个指针变量指向一个结构体变量，此时该指针变量的值是结构体变量的起始地址。
+*/
+
+//数组与指针  系统需要提供一定数量连续的内存来存储数组中的各元素，内存都有地址，指针变量就是存放地址的变量，如果把数组的地址赋给指针变量，就可以通过指针变量来引用数组。
+//一维数组与指针  当定义一个一维数组时，系统会在内存中为该数组分配一个存储空间，！！！其数组的名字就是数组在内存的首地址。
+
+/*
+//输出数组中的元素
+#include<stdio.h>
+int main(){
+    int *p, *q, a[5], b[5], i;
+    p = &a[0];
+    q = b;  // &a[0] == a;
+    printf("请输入数组a中的元素：\n");
+    for ( i = 0; i < 5; i++)
+    {
+        scanf("%d", &a[i]);
+    }
+    printf("请输入数组b中的元素：\n");
+    for ( i = 0; i < 5; i++)
+    {
+        scanf("%d", &b[i]);
+    }
+    printf("数组a中的元素为：\n");
+    for ( i = 0; i < 5; i++)
+    {
+        printf("%5d", *(p+i));
+    }
+    printf("\n");
+    printf("数组b的元素为：\n");
+    for ( i = 0; i < 5; i++)
+    {
+        printf("%5d", *(q+i));
+    }
+    printf("\n");
+    
+    return 0;    
+}
+
+//a+n 表示数组元素的地址， *(a+n) 表示数组元素
+*/
+
+/*
+//修改上述代码
+#include<stdio.h>
+int main(){
+    int *p, *q, a[5], b[5], i;
+    p = &a[0];
+    q = b;  // &a[0] == a;
+    printf("请输入数组a中的元素：\n");
+    for ( i = 0; i < 5; i++)
+    {
+        scanf("%d", &a[i]);
+    }
+    printf("请输入数组b中的元素：\n");
+    for ( i = 0; i < 5; i++)
+    {
+        scanf("%d", &b[i]);
+    }
+    printf("数组a中的元素为：\n");
+    for ( i = 0; i < 5; i++)
+    {
+        printf("%5d", *(a+i));
+    }
+    printf("\n");
+    printf("数组b的元素为：\n");
+    for ( i = 0; i < 5; i++)
+    {
+        printf("%5d", *(b+i));
+    }
+    printf("\n");
+    
+    return 0;    
+}
+
+//表示指针移动可以使用 ++ 和  -- 这两个运算符
+*/
+
+/*
+#include<stdio.h>
+int main(){
+    int *p, *q, a[5], b[5], i;
+    p = &a[0];
+    q = b;  // &a[0] == a;
+    printf("请输入数组a中的元素：\n");
+    for ( i = 0; i < 5; i++)
+    {
+        scanf("%d", p++);
+    }
+    printf("请输入数组b中的元素：\n");
+    for ( i = 0; i < 5; i++)
+    {
+        scanf("%d", q++);
+    }
+    p = a; //将指针变量p和指针变量q重新指向数组a和数组b在内存中的起始位置。
+    q = b;
+    printf("数组a中的元素为：\n");
+    for ( i = 0; i < 5; i++)
+    {
+        printf("%5d", *p++);
+    }
+    printf("\n");
+    printf("数组b的元素为：\n");
+    for ( i = 0; i < 5; i++)
+    {
+        printf("%5d", *q++);
+    }
+    printf("\n");
+    
+    return 0;    
+}
+*/
+
+/*
+//二维数组与指针 1、&a[0][0]即可以看做数组0行0列的首地址，同样还可以看作是二维数组的首地址。&a[m][n]就是第m行n列元素的地址。 2、a[0]+n，表示第0行第n个元素的地址。
+#include<stdio.h>
+int main(){
+    int a[3][5], i, j;
+    printf("请输入15个数值：\n");
+    for ( i = 0; i < 3; i++)  //控制二维数组的行数
+    {
+        for ( j = 0; j < 5; j++)  //控制二维数组列数
+        {
+            scanf("%d", a[i] + j);  //给二维数组元素赋初值
+        }
+    }
+    printf("数组中的排列为：\n");
+    for ( i = 0; i < 3; i++)
+    {
+        for ( j = 0; j < 5; j++)
+        {
+            printf("%5d", *(a[i]+j));  //输出数组中元素
+        }
+        printf("\n");
+    }
+
+    return 0;
+}
+*/
+
+/*
+//修改
+#include<stdio.h>
+int main(){
+    int a[3][5], i, j;
+    int *p = a[0];
+    printf("请输入15个数值：\n");
+    for ( i = 0; i < 3; i++)  //控制二维数组的行数
+    {
+        for ( j = 0; j < 5; j++)  //控制二维数组列数
+        {
+            scanf("%d", p++);  //给二维数组元素赋初值
+        }
+    }
+    p = a[0];
+    printf("数组中的排列为：\n");
+    for ( i = 0; i < 3; i++)
+    {
+        for ( j = 0; j < 5; j++)
+        {
+            printf("%5d", *p++);  //输出数组中元素
+        }
+        printf("\n");
+    }
+
+    return 0;
+}
+*/
+
+/*
+//&a[0]是第0行的首地址，当然&a[n]就是第n行的首地址
+//将一个3行5列的二维数组的第三行元素输出
+#include<stdio.h>
+int main(){
+    int a[3][5], i, j, (*p)[5];
+    p = &a[0];
+    printf("请输入15个正整数：\n");
+    for ( i = 0; i < 3; i++)
+    {
+        for ( j = 0; j < 5; j++)
+        {
+            scanf("%d", (*(p+i)+j));  //为二维数组中的元素赋值
+        }
+    }
+    p = &a[2];  //  *p为第一个元素的地址
+    printf("第三行中的元素为：\n");  
+    for ( j = 0; j < 5; j++)
+    {
+        printf("%5d", *((*p)+j));  //输出二维数组中的元素
+    }
+    printf("\n");
+    
+    return 0;
+}
+*/
+
+// a + n 表示第n行的首地址  *(*(a+n)+m)表示第n行第m列元素  *(a[n]+m)  ==>  利用指针引用二维数组关键要记住 *(a+i) 与 a[i] 是等价的
+
+//字符串与指针 访问一个字符串可以通过两种方式， 第一种方式是前面讲过的使用字符数组来存放一个字符串，从而实现对字符串的操作，另一种方式就是下面介绍的使用字符指针指向一个字符串，此时不定义数组！！！
+
+/*
+//字符型指针应用
+#include<stdio.h>
+int main(){ 
+    char *string = "\n见之而不知，虽识不妄：\n知之而不行，随敦必困。\n";  //这里并不是把这些字符存放到string中，只是把这个字符串中第一个字符的地址赋给指针变量string。
+    printf("%s\n", string);  //输出字符串
+    return 0;
+}
+*/
+
+/*
+//声明两个字符数组，将str1的字符复制到str2中
+#include<stdio.h>
+int main(){
+    char str1[] = "合抱之木，生于毫末。", str2[30], *p1, *p2;
+    p1 = str1;
+    p2 = str2;
+    //puts(str2);
+    while (*p1 != '\0')
+    {
+        *p2 = *p1;
+        p1++;  //指针移动
+        p2++;
+    }
+    *p2 = '\0';  //在字符串的末尾加结束符
+    printf("现在第二个字符串的内容为：\n");
+    puts(str2);
+
+    return 0;
+}
+*/
+
+//字符串数组  字符串数组有别于字符数组，字符数组是一个一维数组，而字符串数组是以字符串作为数组元素的数组，其实可以看做是二维字符数组。
+/*
+    一个简单的字符串数组
+    char country[5][20] = {
+        "China",
+        "Japan",
+        "Russia",
+        "Germany",
+        "Switzerland"
+    }
+    通过观察上面定义的字符串数组会发现，像China等字符串长度仅为5，加上字符串结束符也仅为6，而在内存中却要给它们分配一个20字节的空间，这样会造成资源浪费。
+    为了解决和这个问题，可以使用指针数组，每个指针指向所需要的字符变量。这种方法虽然需要在数组中保存字符指针，同样也占用空间，但是要远少于字符串数组需要的空间。
+    指针数组： 一个数组，其元素均为指针类型数据，即称为指针数组，也就是说指针数组中的每一个元素都相当于一个指针变量。一维指针数组的定义如下：
+        类型名 数组名[数组长度]
+    */
+
+/*
+//输出12个月份
+#include<stdio.h>
+int main(){
+    int i;
+    char *month[]={
+           "January(一月)",
+           "February(二月)",
+           "March(三月)",
+           "April(四月)",
+           "May(五月)",
+           "June(六月)",
+           "July(七月)",
+           "August(八月)",
+           "September(九月)",
+           "October(十月)",
+           "November(十一月)",
+           "December(十二月)"
+    };  //给指针数组中的元素赋初值
+    for ( i = 0; i < 12; i++)
+    {
+        printf("%s\n", month[i]); //输出指针数组中的各个元素
+    }
+
+    return 0;
+}
+*/
+
+/*
+//使用指针输出数组元素 输入10个数值，可以看到输出的数组元素值
+#include<stdio.h>
+int main(){
+    int numAll[10], *p;
+    p = numAll;
+    for (int i = 0; i < 10; i++)
+    {
+        scanf("%d", p);
+        p++;
+    }
+    for (int i = 0; i < 10; i++)
+    {
+        printf("%d\n", numAll[i]);
+    }
+    
+    return 0;
+}
+*/
+
+/*
+//使用指针查找数列中最大值和最小值
+#include<stdio.h>
+void max_min(int a[], int n, int *max, int *min);
+int main(){
+    int num[100], maxNum, minNum;  
+    for (int i = 0; i < 10; i++)
+    {
+        scanf("%d", &num[i]);
+    }
+    max_min(num, 10, &maxNum, &minNum);
+    printf("\n数列中最大值为：%d\n", maxNum);
+    printf("数列中最小值为：%d\n", minNum);
+
+    return 0;
+}
+void max_min(int a[], int n, int *max, int *min){
+    int *p;
+    *max  = *min = *a;
+    for ( p = a+1; p < a+n; p++)
+    {
+        if(*p > *max){
+            *max = *p;
+        }
+        else if(*p < *min){
+            *min = *p;
+        }
+    }
+    
+}
+*/
+
+//指向指针的指针   一个指针变量可以指向整型变量、实型变量、字符型变量，当然也可以指向指针类型变量。当指针变量用于指向指针类型变量时，则称之为指针的指针变量。 定义如下： 类型标识符 **指针变量名;
+//其含义为定义一个指针变量p，它指向另一个指针变量，该指针变量又指向一个基本整型变量。  上述定义相当于： int *(*p);
+
+/*
+//使用指向指针的指针输出12个月份
+#include<stdio.h>
+int main(){
+    int i;
+    char **p;
+    char *month[]={
+           "January(一月)",
+           "February(二月)",
+           "March(三月)",
+           "April(四月)",
+           "May(五月)",
+           "June(六月)",
+           "July(七月)",
+           "August(八月)",
+           "September(九月)",
+           "October(十月)",
+           "November(十一月)",
+           "December(十二月)"
+    };  //给指针数组中的元素赋初值
+    for ( i = 0; i < 12; i++)
+    {   
+        p = month + i;
+        printf("%s\n", *p); //输出指针数组中的各个元素
+    }
+
+    return 0;
+}
+*/
+
+/*
+//利用指向指针的指针输出一维数组中是偶数的元素，并统计偶数的个数
+#include<stdio.h>
+int main(){
+    int a[15], *p1, **p2, i, n=0;
+    printf("请输入15个数值：\n");
+    for ( i = 0; i < 15; i++)
+    {
+        scanf("%d", &a[i]);  //给数组各个元素赋值
+    }
+    p1 = a;  //将数组a的首地址赋给p1
+    p2 = &p1; //将指针p1的地址赋给p2
+    printf("数组中的偶数为：\n");
+    
+    for ( i = 0; i < 15; i++)
+    {
+        if(*(*p2+i) % 2 == 0){
+            printf("%5d", *(*p2+i));  //输出数组中的元素
+            n++;
+        }
+    }
+    printf("\n");
+    printf("数组中偶数的个数为：%d\n", n);
+    
+    return 0;
+}
+//p2 一直存放着数组a[15]的首地址，不随p1的改变而改变
+*/
+
+/*
+//使用指针的指针输出字符串  首先使用指针数组创建一个字符串数组，然后定义指向指针的指针，使其指向字符串数组，并使用其将数组中的字符串输出。
+#include<stdio.h>
+int main(){
+    char *name[] = {"李明洋", "杨景", "百年好合"};
+    char **word = name;
+    for (int i = 0; i < 3; i++)
+    {
+        printf("%s\n", *(word+i));
+    }
+    
+    return 0;
+}
+*/
+
+/*
+//使用指向指针的指针对字符串排序
+#include<stdio.h>
+#include<string.h>
+void sort(char *strings[], int n){
+    //自定义函数sort()，用以实现对字符串的排序
+    char *temp;  //声明字符型指针变量
+    int i, j;  //声明整型变量
+    for ( i = 0; i < n; i++)
+    {
+        for ( j = i+1; j < n; j++)
+        {
+            if( strcmp(strings[i], strings[j]) > 0){
+                //比较两个字符
+                temp = strings[i];
+                strings[i] = strings[j];
+                strings[j] = temp;
+            }
+        } 
+    }
+    
+
+}
+int main(){
+    int n = 3;
+    int i;
+    char *name[] = {"杨景", "李明洋", "百年好合"};
+    char **word = name;
+    for (int i = 0; i < 3; i++)
+    {
+        printf("%s\n", name[i]);
+    }
+    sort(word, n);  //调用排序自定义过程
+    printf("排序后的数组：\n");
+    for ( i = 0; i < n; i++)
+    {
+        //循环输出排序后的数组元素
+        printf("%s\n", name[i]);
+    }
+    
+    return 0;
+}
+*/
+
+//函数参数的指针变量： 指针型变量也可以作为函数参数。
+
+/*
+//调用自定义函数交换两变量值
+#include<stdio.h>
+void swap(int *a, int *b)
+{
+    int tmp;
+    tmp = *a;
+    *a = *b;
+    *b = tmp;
+}
+int main(){
+    int x,y;
+    int *p_x, *p_y;
+    printf("请输入两个数：\n");
+    scanf("%d", &x);
+    scanf("%d", &y);
+    printf("x=%d\n", x);
+    printf("y=%d\n", y);
+    p_x = &x;
+    p_y = &y;
+    swap(p_x, p_y);
+    printf("两个数互换的结果为：\n");
+    printf("x=%d\n", x);
+    printf("y=%d\n", y);
+
+    return 0;
+}
+*/
+
+//在函数调用过程中，主调函数与被调用函数之间有一个数值传递过程。函数调用中发生的数据传递是单向的，只能把实参的值传递给形参，在函数调用过程中，形参的值发生改变，实参的值不会发生变化，所以上面这段代码不能实现x和y值的互换。
+//通过指针传递参数可以减少值传递带来的开销，也可以使函数调用不产生值传递。
+
+/*
+//嵌套的函数调用
+#include<stdio.h>
+void swap(int *p1, int *p2){
+    int temp;
+    temp = *p1;
+    *p1 = *p2;
+    *p2 = temp;
+}
+void exchange(int *pt1, int *pt2, int *pt3)//三个数由大到小排序
+{
+    if (*pt1 < *pt2)
+    {
+        swap(pt1, pt2);  //调用swap函数
+    }
+    if(*pt1 < *pt3){
+        swap(pt1, pt3);
+    }
+    if(*pt2 < *pt3){
+        swap(pt2, pt3);
+    }
+}
+int main(){
+    int a,b,c, *q1, *q2, *q3;
+    puts("请输入三个您想要比较大小的整数：");
+    scanf("%d %d %d", &a, &b, &c);
+    q1 = &a;
+    q2 = &b;
+    q3 = &c;
+    exchange(q1, q2, q3);
+    printf("将三个数由大到小的顺序输出：");
+    printf("\n%d %d %d\n", a,b,c);
+}
+*/
+
+//C语言中实参变量和形参变量之间的数据传递是单项的“值传递”方式。指针变量作函数参数也是如此，调用函数不可能改变实参指针变量的值，但可以改变实参指针变量所指变量的值。
+
+//介绍如何使用指向数组的指针变量作函数参数
+
+/*
+//1、形式参数和实际参数均为指针变量  任意输入15个数据，现将这15个数据中是奇数的数据输出，再求这15个数据中所有奇数之和。
+#include<stdio.h>
+void SUM(int *p, int n){
+    //自定义函数SUM()查找数组中的奇数
+    int i, sum = 0;
+    printf("数组中的奇数为：\n");
+    for ( i = 0; i < n; i++)
+    {
+        if (*(p+i) % 2 != 0)  //判断数组中的元素是否为奇数
+        {
+            printf("%5d", *(p+i));
+            sum = sum + *(p+i);
+        }
+    }
+    printf("\n");
+    printf("奇数的和为：%d\n", sum);
+}
+
+int main(){
+    int *pointer, a[15], i;
+    pointer = a;  //指针指向数组的首地址
+    printf("请输入15个整数值：\n");
+    for ( i = 0; i < 15; i++)
+    {
+        scanf("%d", &a[i]);
+    }
+    SUM(pointer, 15);  //调用SUM()函数
+
+    return 0;
+}
+*/
+
+//数组名就是这个数组的首地址，所以可以将数组名作为实参传递给形式参数
+//使用指针实现冒泡排序 冒泡排序的基本思想：如果要对n个数进行冒泡排序，则要进行n-1趟比较，在第一趟比较中药进行n-1次两两比较，在第j趟要进行n-j趟比较。
+/*
+#include<stdio.h>
+void order(int *p, int n){
+    int i,t,j;
+    for ( i = 0; i < n; i++)
+    {
+        for( j=0;j<n-1-i;j++){
+            if( *(p+j) > *(p+j+1) )  //判断两个相邻元素的大小
+            {
+                t = *(p+j);
+                *(p+j) = *(p+j+1);
+                *(p+j+1) = t;  //借助中间变量t进行值互换 
+            }
+        }
+    }
+    printf("排序后的数组：");
+    for ( i = 0; i < n; i++)
+    {
+        if (i%5 == 0)
+        {
+            printf("\n"); //以每行五个元素的形式输出
+        }
+        printf("%5d", *(p+i));  //输出数组中排序后的元素
+    }
+    printf("\n");
+    
+}
+int main(){
+    int a[50], i, n;
+    printf("请输入元素元素的个数：\n");
+    scanf("%d", &n);
+    printf("请输入各个元素：\n");
+    for ( i = 0; i < n; i++)
+    {
+        scanf("%d", a+i);  //给数组元素赋值
+    }
+    
+    order(a, n);  //调用order()函数，对数组进行排序
+
+    return 0;
+    
+}
+*/
+
+
+//当形式参数为数组时，实参也可以是指针变量 -->  将上述冒泡排序的例子进行修改
+/*
+#include<stdio.h>
+void order(int a[], int n){
+    int i,t,j;
+    for ( i = 0; i < n; i++)
+    {
+        for( j=0;j<n-1-i;j++){
+            if( *(a+j) > *(a+j+1) )  //判断两个相邻元素的大小
+            {
+                t = *(a+j);
+                *(a+j) = *(a+j+1);
+                *(a+j+1) = t;  //借助中间变量t进行值互换 
+            }
+        }
+    }
+    printf("排序后的数组：");
+    for ( i = 0; i < n; i++)
+    {
+        if (i%5 == 0)
+        {
+            printf("\n"); //以每行五个元素的形式输出
+        }
+        printf("%5d", *(a+i));  //输出数组中排序后的元素
+    }
+    printf("\n");
+    
+}
+int main(){
+    int a[50], i, n;
+    int *p;
+    p = a;
+    printf("请输入元素元素的个数：\n");
+    scanf("%d", &n);
+    printf("请输入各个元素：\n");
+    for ( i = 0; i < n; i++)
+    {
+        scanf("%d", p+i);  //给数组元素赋值
+    }
+    
+    order(p, n);  //调用order()函数，对数组进行排序
+
+    return 0;
+    
+}
+*/
+
+//用指向指针的指针作为函数参数  编程实现对英文的12个月份按字母顺序进行排序
+/*
+#include<stdio.h>
+#include<string.h>
+void sort(char *strings[], int n) //自定义排序函数
+{
+    char *temp;
+    int i,j;
+    for(i=0; i<n;i++){
+        for( j=i+1; j<n; j++){
+            if( strcmp(strings[i], strings[j]) > 0){ //比较两个字符串的大小{
+                temp = strings[i];
+                strings[i] = strings[j];
+                strings[j] = temp;  //如果前面字符串比后面的大，则互换
+            }
+        }
+    }
+}
+int main(){
+    int n = 12;
+    int i;
+    char **p;
+    //！！！指针数组指针数组可以说成是”指针的数组”，首先这个变量是一个数组。其次，”指针”修饰这个数组，意思是说这个数组的所有元素都是指针类型。
+    char *month[]={ 
+           "January(一月)",
+           "February(二月)",
+           "March(三月)",
+           "April(四月)",
+           "May(五月)",
+           "June(六月)",
+           "July(七月)",
+           "August(八月)",
+           "September(九月)",
+           "October(十月)",
+           "November(十一月)",
+           "December(十二月)"
+    };  //给指针数组中的元素赋初值
+    p = month;
+    sort(p, n);
+    printf("排序后的12月份如下：\n");
+    for(i=0; i<n; i++){
+        printf("%s\n", month[i]);
+    }
+}
+*/
+
+//找出数组每行中最大的数，并将这3个数相加求和
+/*
+#include<stdio.h>
+void max(int (*a)[4], int m) //自定义max函数，求二维数组中每行最大元素
+{
+    int value, i, j, sum = 0;
+    for(i=0; i<m; i++){
+        value = *(*(a+i));  //将每行中的首个元素赋给value
+        for(j=1; j<4; j++){
+            if( *(*(a+i)+j) > value ){
+                //判断其他元素怒是否大于value的值
+                value = *(*(a+i)+j);  //把比value大的数重新赋给value
+            }
+        }
+        printf("第%d行：最大数是：%d\n", i, value);
+        sum += value;
+    }
+    printf("\n");
+    printf("每行最大数相加之和是：%d\n", sum);
+}
+int main(){
+    int a[3][4], i, j;
+    int (*p)[4];
+    p = &a[0];
+    printf("请输入一个3行4列的二维数组：\n");
+    for(i=0; i<3; i++){
+        for(j=0; j<4; j++){
+            scanf("%d", &a[i][j]);  //给数组中的元素赋值
+        }
+    }
+    max(p,3);
+}
+*/
+
+//使用返回指针的函数查找最大值  实现在窗体上输入10个整数后，再次在窗体上输出这些整数中的最大值。
+/*
+#include<stdio.h>
+void maxNum(int *p, int n, int *max){
+    int i;
+    *max = *p;
+    for(i=1; i<n; i++){
+        if( *max < *(p+i) ){
+            *max = *(p+i);
+        }
+    }
+
+}
+int main(){
+    int a[10], size = 10, i;
+    int max = 0, *all = &max;
+    printf("请输入十个整数：\n");
+    for(i=0; i<size; i++){
+        scanf("%d", a+i);
+    }
+    maxNum(a, size, all);
+
+    printf("这十个数中的最大值为：%d\n", max);
+}
+*/
+
+//寻找相同元素的指针  比较两个有序数组的元素，输出两个数组中第一个相同的元素值
+
+/* 
+    返回指针值的函数 ：  指针变量也可以指向一个函数。一个函数在编译时被分配给一个入口地址，这个函数入口地址就称为函数的指针。可以用一个指针变量指向函数，然后通过该指针变量调用此函数。
+    一个函数可以返回一个整数值、字符值、实型值等，也可以返回指针型的数据，即地址。其概念与以前类似，只是返回的值的类型是指针类型而已。返回指针型的函数简称为指针函数。
+    定义指针函数的一般形式为：
+        类型名 *函数名(参数列表)
+        int *fun(int x, int y)
+    fun是函数名，调用它以后得到一个指向指针型数据的指针。x和y是函数fun()的形式参数。这个函数名前有一个 ” * “，表示此函数是指针型函数，类型说明int表示返回的指针执行一个整型变量。
+*/
+
+//求长方形的周长
+/*
+#include<stdio.h>
+int per(int a, int b);
+int main(){
+    int iWidth, iLength, iResult;
+    printf("请输入长方形的长：\n");
+    scanf("%d", &iLength);
+    printf("请输入长方形的宽：\n");
+    scanf("%d", &iWidth);
+    
+    iResult = per(iWidth, iLength);
+    
+    printf("长方形的周长是：%d\n", iResult);
+    
+    return 0;
+}
+int per(int a, int b){
+    return (a+b)*2;
+}
+*/
+
+//修改为返回值是指针的函数
+/*
+#include<stdio.h>
+int *per(int a, int b);
+int Perimeter;
+int main(){
+    int iWidth, iLength;
+    int *iResult;
+    printf("请输入长方形的长：\n");
+    scanf("%d", &iLength);
+    printf("请输入长方形的宽：\n");
+    scanf("%d", &iWidth);
+    
+    iResult = per(iWidth, iLength);
+    
+    printf("长方形的周长是：%d\n", *iResult);
+    
+    return 0;
+}
+int *per(int a, int b){
+    int *p;
+    p = &Perimeter;
+    *p = (a+b)*2;
+    return p;
+}
+//程序本身并不需要写为上述指针形式，因为对这种问题像上面这样编写出的程序并不简便，这里这样写只是为了讲解的目的。
+*/
+
+/*
+    指针数组做main()函数的参数
+    
+    在前面讲过的程序中，都会出现main()函数，main()函数称之为主函数，是所有程序运行的入口。main()函数是由系统调用的，当处于操作命令状态下时，输入main所在的文件名，系统就调用main()函数。在前面课程的学习中，对main()函数始终作为主调函数处理，即允许main调用其他函数并传递参数。
+    main()函数的第一行一般形式如下：
+        main()
+    从上面会发现main()函数是没有参数的，那么到底main()函数能否有参数呢？实际上main()函数可以是无参函数也可以是有参的函数。对于有参的形式来说，就需要想其传递参数。下面先看一下main()函数带参的形式。
+        main(int argc, char *argv[])
+    从函数参数的形式上看，包含一个整型和一个指针数组。当一个C出的源程序经过编译、链接后，会生成扩展名为.exe的可执行文件，这是可以在操作系统下直接运行的文件，对于main()函数来说其实际参数和命令是一起给出的。
+    也就是在一个命令行中包括命令名和需要传给main()函数的参数。命令行的一般形式如下：
+    命令名 参数1 参数2 ... 参数n
+    例如：
+        ./a.out hi yeah
+        file1 happy bright glad
+    其中 file1 为文件名，也就是一个由file.c经编译、连接后生成的可执行文件，其后跟3个参数。以上命令行与main()函数的形式参数关系为：
+        它的参数 argc 记录了命令行中命令与参数的个数(file1， happ，bright，glad)，共4个，指针数组的大小由参数的值决定，即为char *argc[4]。
+    即：利用指针数组做main()函数的形参，可以向程序传送命令行参数。
+
+    注释：参数字符串的长度是不定的，并且参数字符串的长度不需要统一，且参数的数目也任意的，并不规定具体个数。 
+
+*/
+
+//输出main()函数参数内容
+/*
+#include<stdio.h>
+int main(int argc, char *argv[]){
+    //main()函数为带参函数
+    printf("the list of parameter:\n");
+    printf("命令名：\n");
+    printf("%s\n", *argv);
+    printf("参数个数：\n");
+    printf("%d\n", argc);
+
+    return 0;
+}
+*/
+
+//第十一章  指针  小结
+/*
+    指针是C语言中最难掌握和理解的内容，但是灵活地运用指针能够提高程序的执行效率
+    给程序开发带来更多便利。
+    当然，如果使用不当，也会带来灾难性的后果。
+    ！！！因此，希望读者能够很好地理解本章内容，为今后的程序开发打下良好的基础！！！
+*/
+
+
